@@ -6,41 +6,41 @@ from blog.models import Category, Location, Post
 admin.site.empty_value_display = 'Не задано'
 
 
+class PostInLine(admin.StackedInline):
+    model = Post
+    extra = 0
+
+
 class CategoryAdmin(admin.ModelAdmin):
+    inlines = (PostInLine,)
     list_display = (
         'title',
-        'description',
         'slug',
         'is_published',
-        'created_at',
     )
-    list_editable = ('is_published',)
 
 
 class LocationAdmin(admin.ModelAdmin):
+    inlines = (PostInLine,)
     list_display = (
         'name',
         'is_published',
-        'created_at',
     )
-    list_editable = ('is_published',)
 
 
 class PostAdmin(admin.ModelAdmin):
-    search_fields = ('text', 'pub_date', 'author',)
+    search_fields = ('category', 'location', 'is_published',)
     list_display = (
-        'id',
         'title',
-        'text',
-        'is_published',
         'pub_date',
         'author',
         'location',
+        'is_published',
         'created_at',
     )
     list_display_links = ('title',)
-    list_editable = ('text', 'location', 'is_published',)
-    list_filter = ('is_published', 'created_at',)
+    list_editable = ('is_published',)
+    list_filter = ('category', 'location', 'is_published',)
 
 
 admin.site.register(Category, CategoryAdmin)

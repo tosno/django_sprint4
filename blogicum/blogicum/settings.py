@@ -6,7 +6,10 @@ SECRET_KEY = 'django-insecure-78zy@xn&_h@x7!t!gr@si&2ntnz+ws(xxu+0n!!ka7b4ap_)=7
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+]
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
@@ -103,6 +106,8 @@ STATIC_URL = '/static/'
 # Default primary key field type
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_FAILURE_VIEW = 'pages.views.csrf_failure'
 
 MAXLENGTH = 256
 

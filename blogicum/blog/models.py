@@ -107,8 +107,8 @@ class Post(BaseBlogModel):
         related_name='posts',
         verbose_name='Категория',
     )
-    published = PublishedPostsManager()
     objects = models.Manager()
+    published = PublishedPostsManager()
 
     def __str__(self):
         return self.title

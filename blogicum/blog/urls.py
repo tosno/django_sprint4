@@ -12,7 +12,7 @@ urlpatterns = [
         name='create_post',
     ),
     path(
-        'posts/<int:post_id>/',
+        'posts/<int:pk>/',
         views.post_detail,
         name='post_detail',
     ),
@@ -47,7 +47,7 @@ urlpatterns = [
         name='add_comment',
     ),
     path(
-        'posts/<int:post_id>/edit/<int:comment_pk>',
+        'posts/<int:post_id>/edit_comment/<int:comment_id>',
         views.CommentUpdateView.as_view(),
         name='edit_comment',
     ),
