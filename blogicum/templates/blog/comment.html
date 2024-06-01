@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load django_bootstrap5 %}
 {% block title %}
-  {% if '/edit_comment/' in request.path %}
+  {% if is_edit_comment %}
     Редактирование комментария
   {% else %}
     Удаление комментария
@@ -12,7 +12,7 @@
     <div class="col d-flex justify-content-center">
       <div class="card" style="width: 40rem;">
         <div class="card-header">
-          {% if '/edit_comment/' in request.path %}
+          {% if is_edit_comment %}
             Редактирование комментария
           {% else %}
             Удаление комментария
@@ -20,7 +20,7 @@
         </div>
         <div class="card-body">
           <form method="post"
-            {% if '/edit_comment/' in request.path %}
+            {% if is_edit_comment %}
               action="{% url 'blog:edit_comment' comment.post_id comment.id %}"
             {% endif %}>
             {% csrf_token %}

@@ -29,6 +29,12 @@ class PostsReverseMixin:
     form_class = BlogForm
     template_name = 'blog/create.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_edit_post'] = '/edit/' in self.request.path
+        context['is_delete_post'] = '/delete/' in self.request.path
+        return context
+
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
@@ -40,10 +46,15 @@ class CommentPostMixin:
     model = Comment
     form_class = CommentForm
     template_name = 'blog/comment.html'
-    pk_url_kwarg = "comment_id"
+    pk_url_kwarg = 'comment_id'
 
     def get_queryset(self):
-        return Comment.objects.filter(author=self.request.user)
+        return self.request.user.comments.filter(author=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_edit_comment'] = '/edit_comment/' in self.request.path
+        return context
 
     def get_success_url(self):
         post_id = self.object.post.pk
@@ -61,7 +72,7 @@ class PostUpdateView(LoginRequiredMixin, PostsReverseMixin, UpdateView):
 
     def dispatch(self, request, *args, **kwargs):
         instance = self.get_object()
-        post_id = self.kwargs['pk']
+        post_id = self.kwargs.get('pk')
         if instance.author != request.user:
             return redirect(
                 'blog:post_detail',
@@ -190,15 +201,14 @@ def post_detail(request, pk):
     ):
         raise Http404
     else:
-        post
+        form = CommentForm()
+        comments = post.comments.all()
+        context = {
+            'post': post,
+            'form': form,
+            'comments': comments
+        }
 
-    form = CommentForm()
-    comments = post.comments.all()
-    context = {
-        'post': post,
-        'form': form,
-        'comments': comments
-    }
     return render(request, 'blog/detail.html', context)
 
 

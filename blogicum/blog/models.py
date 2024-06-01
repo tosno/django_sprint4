@@ -142,6 +142,9 @@ class Comment(BaseBlogModel):
         verbose_name='Автор публикации',
     )
 
+    def __str__(self):
+        return self.text
+
     class Meta:
         verbose_name = 'комментарий'
         verbose_name_plural = 'Комментарии'
